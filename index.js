@@ -64,7 +64,7 @@ async function run() {
 
             const cursor = reviewsCollection.find({});
             const review = await cursor.toArray();
-            res.send(bikes);
+            res.send(review);
 
 
         });
