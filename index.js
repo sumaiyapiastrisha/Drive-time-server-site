@@ -23,6 +23,7 @@ async function run() {
         const database = client.db('driveTime')//database name
         const serviceCollection = database.collection('bikes')//services collection
         const usersCollection = database.collection('users');
+        const reviewsCollection = database.collection('reviews');
         const orderedItemCollection = database.collection('orderedItem');
         // const orderedItemCollection = database.collection('orderdItem')//services collection
 
@@ -50,6 +51,25 @@ async function run() {
             const result = await serviceCollection.deleteOne(query);
             res.json(result);
         })
+
+
+        app.post('/review', async (req, res) => {
+            const review = req.body;
+            const result = await reviewsCollection.insertOne(review);
+            res.json(result);
+        });
+
+        app.get('/review', async (req, res) => {
+
+
+            const cursor = reviewsCollection.find({});
+            const review = await cursor.toArray();
+            res.send(bikes);
+
+
+        });
+
+
         app.post('/users', async (req, res) => {
             const user = req.body;
             const result = await usersCollection.insertOne(user);
@@ -85,21 +105,21 @@ async function run() {
 
         app.put('/users/admin', async (req, res) => {
             const user = req.body;
-            const requester = req.decodedEmail;
-            if (requester) {
-                const requesterAccount = await usersCollection.findOne({ email: requester });
-                if (requesterAccount.role === 'admin') {
-                    const filter = { email: user.email };
-                    const updateDoc = { $set: { role: 'admin' } };
-                    const result = await usersCollection.updateOne(filter, updateDoc);
-                    res.json(result);
-                }
-            }
-            else {
-                res.status(403).json({ message: 'you do not have access to make admin' })
-            }
-
+            // const requester = req.decodedEmail;
+            // if (requester) {
+            // const requesterAccount = await usersCollection.findOne({ email: email });
+            // if (requesterAccount.role === 'admin') {
+            const filter = { email: user.email };
+            const updateDoc = { $set: { role: 'admin' } };
+            const result = await usersCollection.updateOne(filter, updateDoc);
+            res.json(result);
+            // }
         });
+        // else {
+        //     res.status(403).json({ message: 'you do not have access to make admin' })
+        // }
+
+        // });
 
 
 
