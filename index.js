@@ -153,5 +153,5 @@ async function run() {
 run().catch(console.dir)
 
 app.listen(port, () => {
-    console.log('running', port)
+    console.log('runing', port)
 })
