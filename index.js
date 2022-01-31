@@ -124,13 +124,13 @@ async function run() {
             const result = await orderedItemCollection.insertOne(item);
             res.json(result);
         });
-        //get ordered bikes
+        //get ordered bike
         app.get('/orderdItem', async (req, res) => {
             const cursor = orderedItemCollection.find({});
             const result = await cursor.toArray();
             res.send(result);
         });
-        // delete ordered items
+        // delete orrdered items
         app.delete('/orderdItem/:id', async (req, res) => {
             const id = req.params.id;
             const query = { _id: ObjectId(id) };
