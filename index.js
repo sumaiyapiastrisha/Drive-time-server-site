@@ -105,7 +105,7 @@ async function run() {
             res.json(result);
         });
 
-        //make admin
+        //make  admin 
         app.put('/users/admin', async (req, res) => {
             const user = req.body;
 
@@ -118,7 +118,7 @@ async function run() {
 
 
 
-        //post ordered bikes
+        //post new ordered bikes 
         app.post('/orderdItem', async (req, res) => {
             const item = req.body;
             const result = await orderedItemCollection.insertOne(item);
