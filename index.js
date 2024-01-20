@@ -15,7 +15,15 @@ app.use(express.json());
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.owgxb.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
-console.log(uri)
+
+// // Define Complaint Schema
+// const complaintSchema = new mongoose.Schema({
+//     user: String,
+//     description: String,
+// });
+
+// const Complaint = mongoose.model('Complaint', complaintSchema);
+// console.log(uri)
 async function run() {
 
     try {
@@ -26,6 +34,9 @@ async function run() {
         const usersCollection = database.collection('users');
         const reviewsCollection = database.collection('reviews');
         const orderedItemCollection = database.collection('orderedItem');
+        const feedbackCollection = database.collection('feedback');
+        const blogCollection = database.collection('blogs');
+        const sellbikeCollection = database.collection('sell-bike');
 
 
         // bikes post .// 
@@ -68,6 +79,52 @@ async function run() {
             res.send(review);
 
 
+        });
+        // post sell-bike
+        app.post('/review', async (req, res) => {
+            const sell_bike = req.body;
+            const result = await sellbikeCollection.insertOne(sell_bike);
+            res.json(result);
+        });
+        // get sell-bike
+        app.get('/sell-bike', async (req, res) => {
+
+
+            const cursor = reviewsCollection.find({});
+            const review = await cursor.toArray();
+            res.send(review);
+
+
+        });
+
+        // post feedback 
+        app.post('/feedback', async (req, res) => {
+            const feedback = req.body;
+            const result = await feedbackCollection.insertOne(feedback);
+            res.json(result);
+        });
+        // get feedback
+        app.get('/feedback', async (req, res) => {
+
+
+            const cursor = feedbackCollection.find({});
+            const feedback = await cursor.toArray();
+            res.send(feedback);
+
+
+        });
+        // post blog 
+        app.post('/blogs', async (req, res) => {
+            const blog = req.body;
+            const result = await blogCollection.insertOne(blog);
+            res.json(result);
+        });
+
+        // GET route for blogs
+        app.get('/blogs', async (req, res) => {
+            const cursor = blogCollection.find({});
+            const blogs = await cursor.toArray();
+            res.send(blogs);
         });
 
         // post users
@@ -149,5 +206,8 @@ async function run() {
 run().catch(console.dir)
 
 app.listen(port, () => {
-    console.log('runing', port)
+    console.log('runing  at', port)
 })
+
+// netstat -ano | findstr "5000"
+// taskkill /F /PID 3312
